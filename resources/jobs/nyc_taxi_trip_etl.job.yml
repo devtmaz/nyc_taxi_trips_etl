@@ -1,0 +1,65 @@
+resources:
+  jobs:
+    nyc_taxi_trips_etl:
+      name: NYC Taxi Trips ETL
+      tasks:
+        - task_key: load_to_landing
+          notebook_task:
+            notebook_path: ../../src/nyc_taxi_trips_etl/etl/landing/load_to_landing.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+              data_collection_started_at: "{{job.start_time.iso_datetime}}"
+              run_id: "{{job.run_id}}"
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: load_to_bronze
+          depends_on:
+            - task_key: load_to_landing
+          notebook_task:
+            notebook_path: ../../src/nyc_taxi_trips_etl/etl/bronze/load_to_bronze.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+              data_collection_started_at: "{{job.start_time.iso_datetime}}"
+              run_id: "{{job.run_id}}"
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: load_to_silver
+          depends_on:
+            - task_key: load_to_bronze
+          notebook_task:
+            notebook_path: ../../src/nyc_taxi_trips_etl/etl/silver/load_to_silver.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+              run_id: "{{job.run_id}}"
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_trip_peak_hours
+          depends_on:
+            - task_key: load_to_silver
+          notebook_task:
+            notebook_path: ../../src/nyc_taxi_trips_etl/etl/gold/trip_peak_hours.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: gold_trip_summary
+          depends_on:
+            - task_key: load_to_silver
+          notebook_task:
+            notebook_path: ../../src/nyc_taxi_trips_etl/etl/gold/trip_summary_per_borough.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      parameters:
+        - name: year_months_to_extract
+          default: "2025, 2026-01"
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+            dependencies:
+              - ../../dist/*.whl
+      performance_target: PERFORMANCE_OPTIMIZED

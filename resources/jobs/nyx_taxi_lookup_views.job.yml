@@ -1,0 +1,21 @@
+resources:
+  jobs:
+    nyc_taxi_lookup_views:
+      name: NYC Taxi Lookup Views
+      description: This job creates lookup views for the NYC Taxi Trips ETL project.
+      tasks:
+        - task_key: taxi_zone_lookup_view
+          notebook_task:
+            notebook_path: ../../notebooks/create_lookup_views.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+              root_path: "${workspace.root_path}"
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
