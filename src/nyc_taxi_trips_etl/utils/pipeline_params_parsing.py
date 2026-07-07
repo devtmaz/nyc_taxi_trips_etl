@@ -16,14 +16,16 @@ def get_current_day() -> datetime:
 def _expand_year(year: int) -> list[str]:
     """Returns all YYYY-MM strings for the given year.
 
-    For the current year, only months up to (current_month - SAFETY_LOOKBACK) are included.
+    For the current year, only months up to (current_month - SAFETY_LOOKBACK)
+    are included.
 
     Args:
         year: The year to expand as integer.
     Returns:
         A list of strings in the format YYYY-MM for each month of the year.
     Raises:
-        ValueError: If the year is the current year and the safety lookback leaves no valid months.
+        ValueError: If the year is the current year and the safety lookback
+        leaves no valid months.
 
     """
     today = get_current_day()
