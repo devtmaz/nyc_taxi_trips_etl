@@ -34,6 +34,3 @@ packages = ["src/nyc_taxi_trips_etl"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-
-[tool.ruff]
-line-length = 120
