@@ -10,6 +10,7 @@ dependencies = [
     # LIMITATION: for pipelines, dependencies are cached during development;
     # add dependencies to the 'environment' section of your pipeline.yml file instead
     "databricks-connect==15.4.23",
+    "pre-commit>=4.6.0",
     "requests>=2.34.2",
 ]
 
@@ -34,3 +35,6 @@ packages = ["src/nyc_taxi_trips_etl"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+
+[tool.black]
+line-length = 81
