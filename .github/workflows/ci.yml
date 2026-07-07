@@ -1,10 +1,9 @@
-name: CI
+name: CI workflow for NYC Taxi Trips ETL
 
 on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   bundle-validate:
