@@ -1,0 +1,6 @@
+{
+  // Databricks runtime implicitly provides `spark`, `dbutils`, `sc`, etc.
+  // Suppress undefined-variable errors at project level;
+  // Ruff (builtins) handles this check with proper awareness of those names.
+  "reportUndefinedVariable": "none"
+}
