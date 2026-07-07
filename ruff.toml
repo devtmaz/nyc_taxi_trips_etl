@@ -1,0 +1,8 @@
+line-length = 81
+lint.extend-select = [
+    "E501"
+]
+lint.ignore = ["T20"]
+
+# Databricks runtime injects these variables into every notebook/script context
+builtins = ["spark", "dbutils", "sc", "sqlContext", "table", "udf"]
