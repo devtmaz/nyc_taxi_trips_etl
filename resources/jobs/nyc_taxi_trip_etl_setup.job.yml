@@ -1,0 +1,32 @@
+resources:
+  jobs:
+    nyc_taxi_trip_etl_setup:
+      name: NYC Taxi Trip ETL Project Setup
+      description: >-
+        This job initializes the NYC Taxi Trip ETL project by creating necessary
+        resources including catalog, schemas, tables and lookups.
+      tasks:
+        - task_key: setup_catalog_and_schemas
+          notebook_task:
+            notebook_path: ../../notebooks/setup_catalog_and_schemas.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: taxi_zone_lookup_view
+          depends_on:
+            - task_key: setup_catalog_and_schemas
+          notebook_task:
+            notebook_path: ../../notebooks/create_lookup_views.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+              root_path: "${workspace.root_path}"
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
