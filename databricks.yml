@@ -39,5 +39,5 @@ targets:
       # We explicitly deploy to /Workspace/Users/tomimas231@gmail.com to make sure we only have a single copy.
       root_path: /Workspace/Users/tomimas231@gmail.com/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog: nyctaxi_dev
-      schema: prod
+      catalog:
+        default: nyctaxi_prod
