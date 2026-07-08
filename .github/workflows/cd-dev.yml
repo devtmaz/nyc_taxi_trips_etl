@@ -1,4 +1,4 @@
-name: CD workflow for NYC Taxi Trips ETL
+name: CD workflow (DEV) for NYC Taxi Trips ETL
 
 on:
   push:
