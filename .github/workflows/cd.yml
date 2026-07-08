@@ -1,0 +1,37 @@
+name: CD workflow for NYC Taxi Trips ETL
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bundle-deploy:
+    name: Databricks Bundle Deploy
+    environment: dev
+    runs-on: ubuntu-latest
+    concurrency:
+      group: cd-dev
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build wheel
+        run: uv build --wheel
+
+      - uses: databricks/setup-cli@v1.6.0
+
+      - name: Deploy bundle to development
+        run: databricks bundle deploy
+        working-directory: .
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: dev
