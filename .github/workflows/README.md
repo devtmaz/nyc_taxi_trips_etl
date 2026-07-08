@@ -26,6 +26,7 @@ Runs when a version tag matching `*.*.*` (e.g. `1.2.3`) is pushed. Validation mu
 
 | Step | Tool | Purpose |
 |------|------|---------|
+| **Verify version tag** | bash | Compares `GITHUB_REF_NAME` (the pushed tag) against the `version` field in `pyproject.toml`. Fails immediately if they differ, preventing a deployment from a mismatched tag. |
 | **Install dependencies** | uv | Installs runtime dependencies via `uv sync`. |
 | **Build wheel** | uv | Builds the Python package artifact required by the bundle (`uv build --wheel`). |
 | **Validate bundle** | Databricks CLI | Runs `databricks bundle validate --target prod` to catch any configuration errors against the production target before making changes. |
