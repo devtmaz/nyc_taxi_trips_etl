@@ -22,7 +22,7 @@ Runs on every push to `main`. Uses a `concurrency` group (`cd-dev`) so that a ne
 
 ## Continuous Deployment — Production (`cd-prod.yml`)
 
-Runs when a version tag matching `[0-9]+.[0-9]+.[0-9]+` (e.g. `1.2.3`) is pushed. Validation must pass before deployment proceeds.
+Runs when a version tag matching `*.*.*` (e.g. `1.2.3`) is pushed. Validation must pass before deployment proceeds.
 
 | Step | Tool | Purpose |
 |------|------|---------|
