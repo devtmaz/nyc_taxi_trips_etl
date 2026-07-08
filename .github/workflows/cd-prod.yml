@@ -1,0 +1,42 @@
+name: CD workflow (PROD) for NYC Taxi Trips ETL
+
+on:
+  push:
+    # Only run this workflow for version tags, e.g. 1.2.3
+    tags: ['[0-9]+\\.[0-9]+\\.[0-9]+']
+
+jobs:
+  bundle-deploy:
+    name: Databricks Bundle Deploy
+    environment: prod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build wheel
+        run: uv build --wheel
+
+      - uses: databricks/setup-cli@v1.6.0
+
+      - name: Validate bundle against production
+        run: databricks bundle validate --target prod
+        working-directory: .
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: prod
+
+      - name: Deploy bundle to production
+        run: databricks bundle deploy --target prod
+        working-directory: .
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: prod
