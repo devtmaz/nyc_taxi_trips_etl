@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ci-cd/create_cd_workflow
   workflow_dispatch:
 
 jobs:
