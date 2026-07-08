@@ -10,6 +10,9 @@ jobs:
     name: Databricks Bundle Deploy
     environment: dev
     runs-on: ubuntu-latest
+    concurrency:
+      group: cd-dev
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +26,7 @@ jobs:
       - name: Build wheel
         run: uv build --wheel
 
-      - uses: databricks/setup-cli@main
+      - uses: databricks/setup-cli@v1.6.0
 
       - name: Deploy bundle to development
         run: databricks bundle deploy

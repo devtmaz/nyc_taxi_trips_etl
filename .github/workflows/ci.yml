@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: databricks/setup-cli@main
+      - uses: databricks/setup-cli@v1.6.0
 
       - name: Validate bundle
         run: databricks bundle validate
