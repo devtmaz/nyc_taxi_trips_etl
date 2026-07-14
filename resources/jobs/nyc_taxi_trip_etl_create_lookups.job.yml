@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    nyc_taxi_trip_etl_create_lookups:
+      name: NYC Taxi Trip ETL Create Lookups
+      description: >-
+        This job creates lookup tables for the NYC Taxi Trip ETL project.
+      tasks:
+        - task_key: create_lookups
+          notebook_task:
+            notebook_path: ../../notebooks/create_lookups.ipynb
+            base_parameters:
+              catalog: "${var.catalog}"
+              root_path: "${workspace.root_path}"
+            source: WORKSPACE
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
