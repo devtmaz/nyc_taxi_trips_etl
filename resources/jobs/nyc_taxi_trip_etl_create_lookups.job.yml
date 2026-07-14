@@ -3,7 +3,7 @@ resources:
     nyc_taxi_trip_etl_create_lookups:
       name: NYC Taxi Trip ETL Create Lookups
       description: >-
-        This job creates lookup tables for the NYC Taxi Trip ETL project.
+        This job uploads lookup fixtures and creates lookup views for the NYC Taxi Trip ETL project.
       tasks:
         - task_key: create_lookups
           notebook_task:
