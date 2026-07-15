@@ -41,5 +41,5 @@ targets:
       catalog:
         default: nyctaxi_prod
     permissions:
-      - level: CAN_MANAGE_RUN
+      - level: CAN_MANAGE
         group_name: nyctaxi_contributors
